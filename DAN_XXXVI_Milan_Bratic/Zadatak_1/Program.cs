@@ -10,21 +10,28 @@ namespace Zadatak_1
 {
     class Program
     {
-        
+        //path to the file
         static string path = "../../MatrixFile.txt";
         private static readonly object locker = new object();
+        //array of int for numbers, leter this array will fill the matrix
         static int[] numbers = new int[10000];
         static int[,] matrix;
+        //list of odd numbers
         static List<int> oddNumbers = new List<int>();
         static Random rnd = new Random();
 
+        /// <summary>
+        /// method for initialization and fill matrix
+        /// </summary>
         static void Matrix()
         {
             lock (locker)
             {
                 matrix = new int[100, 100];
+                //thread wait until the array is filled
                 Monitor.Wait(locker);
                 int index = 0;
+                //fill the matrix with array of numbers 
                 for (int i = 0; i < 100; i++)
                 {
                     for (int j = 0; j < 100; j++)
@@ -35,7 +42,9 @@ namespace Zadatak_1
                 }
             }
         }
-
+        /// <summary>
+        /// method for generate random numbers, and place to the array
+        /// </summary>
         static void GenerateNumber()
         {
             lock (locker)
@@ -47,7 +56,9 @@ namespace Zadatak_1
                 Monitor.Pulse(locker);
             }
         }
-
+        /// <summary>
+        /// method for odd numbers and write to the file. Fill the list with odd numbers from the matrix, and place them to the file
+        /// </summary>
         static void OddMatrixNumber()
         {
             for (int i = 0; i < 100; i++)
@@ -68,6 +79,9 @@ namespace Zadatak_1
                 }
             }
         }
+        /// <summary>
+        /// method for read numbers from the file
+        /// </summary>
         static void ReadNumbersFromTheFile()
         {
             using (TextReader tr = new StreamReader(path))
